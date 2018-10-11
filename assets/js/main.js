@@ -130,7 +130,7 @@ window.onload = function(){
 		
 		if (!remoteVideo.srcObject || remoteVideo.srcObject.id !== stream.id) {
 		  remoteVideo.srcObject = stream;
-		  console.log(remoteVideo);
+		  console.log("added -> remove video", remoteVideo);
 		}
 	  };
 
@@ -148,13 +148,15 @@ window.onload = function(){
 		stream.getTracks().forEach(track => {
 				console.log("adding this track-> ", track);
 				if(track.kind=='audio'){
+					console.log("audio stream added..");
 					pc.addTrack(track, stream);
 				}
 			}
 		);
 		canvasStream.getTracks().forEach(track => {
 			if(track.kind=='video'){
-					pc.addTrack(track, canvasStream);
+					console.log("video stream added..");
+					pc.addTrack(track, stream);
 			}
 			console.log("found this track on canvas-->", track);
 		});
