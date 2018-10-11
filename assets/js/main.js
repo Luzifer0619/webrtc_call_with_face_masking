@@ -5,16 +5,16 @@ window.onload = function(){
 	  var video = document.getElementById('video');
 	  var canvas = document.getElementById('canvas');
 	  var remoteVideo = document.getElementById('remoteVideo');
-	  var video1 = document.getElementById('video1');
+	  //var video1 = document.getElementById('video1');
 	  
 	  var context = canvas.getContext('2d');
 	  
 	  var canvasStream = canvas.captureStream();
 	  
-	  video1.srcObject = canvasStream;
-	  video1.onloadeddata = function(){
-	      video1.play();
-	  };
+	  //video1.srcObject = canvasStream;
+	  //video1.onloadeddata = function(){
+	  //    video1.play();
+	  //};
       var tracker = new tracking.ObjectTracker('face');
       tracker.setInitialScale(1);
       tracker.setStepSize(1);
@@ -128,10 +128,10 @@ window.onload = function(){
 		const stream = event.streams[0];
 		console.log(remoteVideo);
 		
-		//if (!remoteVideo.srcObject || remoteVideo.srcObject.id !== stream.id) {
+		if (!remoteVideo.srcObject || remoteVideo.srcObject.id !== stream.id) {
 		  remoteVideo.srcObject = stream;
 		  console.log(remoteVideo);
-		//}
+		}
 	  };
 
 	  navigator.mediaDevices.getUserMedia({
