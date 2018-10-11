@@ -7,18 +7,32 @@
   <script src="https://rawgit.com/eduardolundgren/tracking.js/master/build/tracking-min.js"></script>
   <script src="https://rawgit.com/eduardolundgren/tracking.js/master/build/data/face-min.js"></script>
   <!-- <script src="https://rawgit.com/dataarts/dat.gui/master/build/dat.gui.min.js"></script> !-->
-  <script src="https://rawgit.com/eduardolundgren/tracking.js/master/examples/assets/stats.min.js"></script>
+  <!-- <script src="https://rawgit.com/eduardolundgren/tracking.js/master/examples/assets/stats.min.js"></script> !-->
   <style src="assets/css/style.css"></style>
+  <style>
+   #video, #canvas {
+    margin-left: 10%;
+    margin-top: 120px;
+    position: absolute;
+  }
+  #remoteVideo {
+    margin-left: 500px;
+    margin-top: 120px;
+    position: absolute;
+  }
+  
+  </style>
 </head>
 <body>
   <div class="copy"> Send the url "<span id="url_id"> to friend to start video chat"</div>
   <div class="demo-frame">
       <video id="video"  width="320" height="240" autoplay muted ></video>
       <canvas id="canvas" width="320" height="240"></canvas>
+	  <video id="remoteVideo" width="320" height="240" autoplay></video>
   </div>
   <!-- <video id="video1"  width="320" height="240" autoplay></video> !-->
   
-  <video id="remoteVideo" width="320" height="240" autoplay></video>
+  
   <script type='text/javascript' src='assets/js/main.js'></script>
 </body>
 </html>

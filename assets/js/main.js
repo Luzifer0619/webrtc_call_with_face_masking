@@ -23,7 +23,7 @@ window.onload = function(){
       tracking.track('#video', tracker);
 	  tracker.on('track', function(event) {
 	    
-		context.clearRect(0, 0, canvas.width, canvas.height);
+		//context.clearRect(0, 0, canvas.width, canvas.height);
 		context.drawImage(video, 0,0,320,240);
 
         event.data.forEach(function(rect) {		
