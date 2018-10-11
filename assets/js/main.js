@@ -1,6 +1,12 @@
+var drawFace = false;
+
+//document.getElementById('draw_image').onclick = function(){
+//	drawFace = !drawFace; 
+//};
+
 window.onload = function(){
 	// ########################## face detection ##########################
-	var img = new Image();
+	  var img = new Image();
 	  img.src = 'assets/img/angry.png';
 	  var video = document.getElementById('video');
 	  var canvas = document.getElementById('canvas');
@@ -19,6 +25,7 @@ window.onload = function(){
       tracker.setInitialScale(1);
       tracker.setStepSize(1);
       tracker.setEdgesDensity(0.1);
+	  context.fillStyle = "#"+Math.floor(Math.random() * 0xFFFFFF).toString(16);
 
       tracking.track('#video', tracker);
 	  tracker.on('track', function(event) {
@@ -27,12 +34,15 @@ window.onload = function(){
 		context.drawImage(video, 0,0,320,240);
 
         event.data.forEach(function(rect) {		
-		  //context.drawImage(img, rect.x,rect.y, rect.width,rect.height);
+		if(drawFace){
+		  context.drawImage(img, rect.x,rect.y, rect.width,rect.height);
+		}else{
+		  context.fillRect(rect.x,rect.y,rect.width,rect.height);
+		}
           //context.strokeStyle = '#a64ceb';
           //context.strokeRect(rect.x, rect.y, rect.width, rect.height);
 
-          //context.fillStyle = "#a64ceb";
-		  context.fillRect(rect.x,rect.y,rect.width,rect.height);
+          
           //context.font = '11px Helvetica';
           //context.fillStyle = "#fff";
           //context.fillText('x: ' + rect.x + 'px', rect.x + rect.width + 5, rect.y + 11);
@@ -46,6 +56,10 @@ window.onload = function(){
 	  location.hash = Math.floor(Math.random() * 0xFFFFFF).toString(16);
 	}
 	const roomHash = location.hash.substring(1);
+	
+	document.getElementById('url_id').innerHTML = window.location;
+	document.getElementById('url_a_id').href = window.location;
+	
 
 	// webrtc demo created channel id.
 	const drone = new ScaleDrone('n7heC3sYlfcOkmkU');
@@ -79,6 +93,11 @@ window.onload = function(){
 	  // connected to the room (including us). Signaling server is ready.
 	  room.on('members', members => {
 		console.log('MEMBERS', members);
+		
+		if(members.length >=3){
+			alert("More than 2 members in the call.");
+			return;
+		}
 		// If we are the second user to connect to the room we will be creating the offer
 		const isOfferer = members.length === 2;
 		startWebRTC(isOfferer);
