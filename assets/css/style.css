@@ -1,6 +1,6 @@
 * {
-  margin: 0;
-  padding: 0;
+  margin: 100px;
+  padding: 100px;
   font-family: Helvetica, Arial, sans-serif;
 }
 
@@ -13,20 +13,10 @@ body {
   padding: 0 50px;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
-video {
-  max-width: calc(50% - 100px);
-  margin: 0 50px;
-  box-sizing: border-box;
-  border-radius: 2px;
-  padding: 0;
-  box-shadow: rgba(156, 172, 172, 0.2) 0px 2px 2px, rgba(156, 172, 172, 0.2) 0px 4px 4px, rgba(156, 172, 172, 0.2) 0px 8px 8px, rgba(156, 172, 172, 0.2) 0px 16px 16px, rgba(156, 172, 172, 0.2) 0px 32px 32px, rgba(156, 172, 172, 0.2) 0px 64px 64px;
-}
 #video, #canvas {
-    //margin-left: 230px;
-    //margin-top: 120px;
-    //position: absolute;
-	border:1px;
-	border-color:red;
+    margin-left: 230px;
+    margin-top: 120px;
+    position: absolute;
   }
 .copy {
   position: fixed;
@@ -59,7 +49,6 @@ video {
 }
 
 .demo-frame {
-  
   width: 100%;
   height: 100%;
   position: fixed;
