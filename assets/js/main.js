@@ -159,7 +159,7 @@ window.onload = function(){
 	  }
 	  pc.oniceconnectionstatechange = (e) => {  // Workaround for Chrome: skip nested negotiations
 		p_status.innerHTML  = "iceConnectionState:" + e.currentTarget.iceConnectionState +"<br>iceGatheringState: "+e.currentTarget.iceGatheringState;
-		console.log("state change:", e);
+		console.log("state change:", e, e.currentTarget.remoteDescription);
 	  }
 	  
 
