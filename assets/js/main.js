@@ -11,6 +11,7 @@ window.onload = function(){
 	  var video = document.getElementById('video');
 	  var canvas = document.getElementById('canvas');
 	  var remoteVideo = document.getElementById('remoteVideo');
+	  const p_status = document.getElementById('status');
 	  //var video1 = document.getElementById('video1');
 	  
 	  var context = canvas.getContext('2d');
@@ -68,22 +69,22 @@ window.onload = function(){
 	const configuration = {
 	  iceServers: [{
 		urls: 'stun:stun.l.google.com:19302'
-	  },
-	  {
-	url: 'turn:numb.viagenie.ca',
-	credential: 'muazkh',
-	username: 'webrtc@live.com'
-},
-{
-	url: 'turn:192.158.29.39:3478?transport=udp',
-	credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-	username: '28224511:1379330808'
-},
-{
-	url: 'turn:192.158.29.39:3478?transport=tcp',
-	credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-	username: '28224511:1379330808'
-}
+		},
+		{
+			url: 'turn:numb.viagenie.ca',
+			credential: 'muazkh',
+			username: 'webrtc@live.com'
+		},
+		{
+			url: 'turn:192.158.29.39:3478?transport=udp',
+			credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+			username: '28224511:1379330808'
+		},
+		{
+			url: 'turn:192.158.29.39:3478?transport=tcp',
+			credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+			username: '28224511:1379330808'
+		}
 	  ]
 	};
 	let room;
@@ -155,17 +156,23 @@ window.onload = function(){
 	  }
 	  pc.onsignalingstatechange = (e) => {  // Workaround for Chrome: skip nested negotiations
 		isNegotiating = (pc.signalingState != "stable");
-	}
+	  }
+	  pc.oniceconnectionstatechange = (e) => {  // Workaround for Chrome: skip nested negotiations
+		p_status.innerHTML  = "iceConnectionState:" + e.currentTarget.iceConnectionState +"<br>iceGatheringState: "+e.currentTarget.iceGatheringState;
+		console.log("state change:", e);
+	  }
+	  
 
 	  // When a remote stream arrives display it in the #remoteVideo element
 	  pc.ontrack = event => {
+		  //p_status.innerHTML = "remote video received and connection status is:  "+ event.currentTarget.iceConnectionState +"</br>";
 		  console.log("event-->", event);
 		const stream = event.streams[0];
 		console.log(remoteVideo);
 		
 		if (!remoteVideo.srcObject || remoteVideo.srcObject.id !== stream.id) {
 		  remoteVideo.srcObject = stream;
-		  console.log("added -> remove video", remoteVideo);
+		  console.log("added -> remote video", remoteVideo);
 		}
 	  };
 
@@ -181,6 +188,7 @@ window.onload = function(){
 		
 		
 		stream.getTracks().forEach(track => {
+			
 				console.log("adding this track-> ", track);
 				if(track.kind=='audio'){
 					console.log("audio stream added..");
@@ -202,12 +210,13 @@ window.onload = function(){
 	  // Listen to signaling data from Scaledrone
 	  room.on('data', (message, client) => {
 		// Message was sent by us
-		console.log(message, client);
+		console.log("message received:", message, client);
 		if (client.id === drone.clientId) {
 		  return;
 		}
 
 		if (message.sdp) {
+			//p_status.innerHTML +=  "remote sdp received.!!! </br>";
 		  // This is called after receiving an offer or answer from another peer
 		  pc.setRemoteDescription(new RTCSessionDescription(message.sdp), () => {
 			// When receiving an offer lets answer it
@@ -216,6 +225,7 @@ window.onload = function(){
 			}
 		  }, onError);
 		} else if (message.candidate) {
+			//p_status.innerHTML +=  "remote sdp received.!!!</br>";
 		  // Add the new ICE candidate to our connections remote description
 		  pc.addIceCandidate(
 			new RTCIceCandidate(message.candidate), onSuccess, onError
@@ -226,7 +236,7 @@ window.onload = function(){
 	
 
 	function localDescCreated(desc) {
-		console.log("local desc created--->", desc);
+		console.log("local desc created--->", desc, desc.sdp);
 	  pc.setLocalDescription(
 		desc,
 		() => sendMessage({'sdp': pc.localDescription}),
